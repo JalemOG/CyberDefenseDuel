@@ -167,4 +167,10 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+# Archivos y carpetas de Eclipse
+.classpath
+.project
+.settings/
+bin/
+
 # End of https://www.toptal.com/developers/gitignore/api/java,windows,linux,eclipse,macos
