@@ -19,7 +19,7 @@ Sistema seguro de inicio de sesión y registro de usuarios con persistencia en t
 ### 2. Selección de Avatar
 Elige entre 6 defensores cibernéticos únicos, cada uno con estadísticas visualizadas mediante gráficos de radar.
 <p align="center">
-  <img src="assets/personajes.jpg" alt="Selección de Personajes" width="700"/>
+  <img src="assets/personajes.png" alt="Selección de Personajes" width="700"/>
 </p>
 
 ### 3. Entornos Temáticos
@@ -31,7 +31,7 @@ Selección dinámica de mapas para la partida, como el *Data Center Dojo* o el *
 ### 4. Gameplay (Carriles de Defensa)
 Sistema de combate en tiempo real donde debes moverte entre carriles para mitigar distintos tipos de ataques informáticos.
 <p align="center">
-  <img src="assets/gameplay.jpg" alt="Interfaz de Gameplay" width="800"/>
+  <img src="assets/gameplay.png" alt="Interfaz de Gameplay" width="800"/>
 </p>
 
 ---
