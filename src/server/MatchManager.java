@@ -1,62 +1,36 @@
 package server;
 
 import common.Modelos.Message;
-import common.Estructuras.Cola; 
+import common.Estructuras.ListaEnlazada;
+import server.Server.ClientHandler;
 
 public class MatchManager {
+    
+    // Tu propia estructura controlando la fila de espera
+    private static final ListaEnlazada<ClientHandler> waitingQueue = new ListaEnlazada<>();
 
-    private final Cola<ClientHandler> waitingPlayers;
+    public static synchronized void joinQueue(ClientHandler player) {
+        // 1. Añadir a la fila y avisarle que espere
+        waitingQueue.agregar(player);
+        player.send(Message.simple("WAITING"));
+        System.out.println("🕹️ Jugador " + player.getUsername() + " en cola. Total: " + waitingQueue.getSize());
 
-    public MatchManager() {
-        waitingPlayers = new Cola<>();
-    }
+        // 2. ¿Hay al menos 2 jugadores listos?
+        if (waitingQueue.getSize() >= 2) {
+            
+            // Sacamos a los dos primeros
+            ClientHandler p1 = waitingQueue.obtener(0);
+            ClientHandler p2 = waitingQueue.obtener(1);
 
-    public synchronized void addPlayerToQueue(ClientHandler player) {
-        if (player.isInQueue()) {
-            Message msg = new Message("ERROR");
-            msg.setText("Ya estás en cola");
-            player.sendMessage(msg);
-            return;
-        }
+            // Los borramos de la sala de espera
+            waitingQueue.eliminar(p1);
+            waitingQueue.eliminar(p2);
 
-        if (player.getSession() != null) {
-            Message msg = new Message("ERROR");
-            msg.setText("Ya estás en una partida");
-            player.sendMessage(msg);
-            return;
-        }
+            System.out.println("⚔️ ¡EMPAREJAMIENTO LISTO: " + p1.getUsername() + " vs " + p2.getUsername() + "!");
 
-        player.setInQueue(true);
-        waitingPlayers.encolar(player); 
-
-        if (waitingPlayers.size() >= 2) {
-            ClientHandler player1 = waitingPlayers.desencolar(); 
-            ClientHandler player2 = waitingPlayers.desencolar();
-
-            player1.setInQueue(false);
-            player2.setInQueue(false);
-
-            GameSession session = new GameSession(player1, player2);
-
-            player1.setSession(session);
-            player2.setSession(session);
-
-            player1.setOpponent(player2);
-            player2.setOpponent(player1);
-
-            player1.sendMessage(Message.simple("MATCH_FOUND"));
-            player2.sendMessage(Message.simple("MATCH_FOUND"));
-
-            Message config = new Message("CONFIG");
-            config.setInitialHp(100); 
-            config.setScorePerKill(10); 
-            config.setLevel(0);  
-
-            player1.sendMessage(config);
-            player2.sendMessage(config);
-
-        } else {
-            player.sendMessage(Message.simple("WAITING"));
+            // 3. ¡Creamos la partida y la iniciamos!
+            GameSession session = new GameSession(p1, p2);
+            session.startMatch();
         }
     }
 }

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane fx:id="rootPane" prefHeight="300.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.WaitingController">   <children>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" height="300.0" stroke="BLACK" strokeType="INSIDE" width="800.0" />
+      <Label layoutX="281.0" layoutY="135.0" text="Waiting for all players..." textFill="WHITE">
+         <font>
+            <Font name="Bell MT" size="24.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
